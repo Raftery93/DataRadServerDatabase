@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:f="http://xmlns.jcp.org/jsf/core">
+  
+  <h:head>
+    <title>Update Country</title>
+  </h:head>
+  
+  <h:body>
+	<h:messages globalOnly="true" styleClass="error"/>
+  	<h3>Country Details</h3>
+    <h:form>
+      CountryID: <h:inputText value="#{country.countryCode}" id="countryCode" required="true" requiredMessage="Country ID is mandatory"></h:inputText>
+  	  <h:message for="countryCode" styleClass="error" />
+      <br/>
+      <br/>
+      Country Name: <h:inputText value="#{country.countryName}" id="countryName" p:placeholder="Enter Country Name" ></h:inputText>
+      <br/>
+      <br/>
+      Country Description: <h:inputText value="#{country.description}" id="description" p:placeholder="Enter Country Description" ></h:inputText>
+	  <br/>
+      <br/>	
+	<h:commandButton value="Update" action="#{countryController.updateCountry(country)}"/>
+   </h:form>
+  </h:body>
+</html>
