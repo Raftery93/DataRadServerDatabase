@@ -14,6 +14,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import com.geog.Model.Country;
+import com.geog.Model.Region;
 
 public class DAO {
 
@@ -107,6 +108,56 @@ private DataSource mysqlDS;
 		myStmt.execute();		
 		
 		
+	}
+	
+	
+	public ArrayList<Region> loadRegions() throws Exception {
+		ArrayList<Region> regions = new ArrayList<Region>();
+		
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		myConn = mysqlDS.getConnection();
+
+		String sql = "select * from region";
+
+		myStmt = myConn.createStatement();
+
+		myRs = myStmt.executeQuery(sql);
+
+		// process result set
+		while (myRs.next()) {
+				
+			Region region = new Region();
+			
+			// retrieve data from result set row
+			region.setcCode(myRs.getString("co_code"));
+			region.setRegionCode(myRs.getString("reg_code"));
+			region.setRegionName(myRs.getString("reg_name"));
+			region.setrDescription(myRs.getString("reg_desc"));
+			
+			// create new country object
+			//Country country = new Country(code, description, name);
+
+			regions.add(region);
+		}	
+		return regions;
+	}
+	
+	public void addRegion(Region region) throws Exception {
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		myConn = mysqlDS.getConnection();
+		String sql = "insert into region values (?, ?, ?, ?)";
+		myStmt = myConn.prepareStatement(sql);
+		myStmt.setString(1, region.getcCode());
+		myStmt.setString(2, region.getRegionCode());
+		myStmt.setString(3, region.getRegionName());
+		myStmt.setString(4, region.getrDescription());
+		myStmt.execute();			
 	}
 	
 }
