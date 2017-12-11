@@ -12,11 +12,12 @@
 	<h:messages globalOnly="true" styleClass="error"/>
   	<h3>Country Details</h3>
     <h:form>
-      CountryID: <h:inputText value="#{country.countryCode}" id="countryCode" required="true" requiredMessage="Country ID is mandatory"></h:inputText>
+      CountryID (Can not be changed): <h:inputText value="#{country.countryCode}" id="countryCode" required="true" requiredMessage="Country ID is mandatory"></h:inputText>
   	  <h:message for="countryCode" styleClass="error" />
       <br/>
       <br/>
-      Country Name: <h:inputText value="#{country.countryName}" id="countryName" p:placeholder="Enter Country Name" ></h:inputText>
+      Country Name: <h:inputText value="#{country.countryName}" id="countryName" required="true" requiredMessage="Country Name is mandatory"></h:inputText>
+      <h:message for="countryName" styleClass="error" />
       <br/>
       <br/>
       Country Description: <h:inputText value="#{country.description}" id="description" p:placeholder="Enter Country Description" ></h:inputText>

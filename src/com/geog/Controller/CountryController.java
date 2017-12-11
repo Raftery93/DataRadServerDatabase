@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.swing.JOptionPane;
 
 import com.geog.DAO.DAO;
 import com.geog.Model.Country;
@@ -65,7 +66,7 @@ public class CountryController {
 		if (dao != null) {
 			try {
 				dao.addCountry(country);
-				return "index";
+				return "list_countries";
 			} catch (MySQLIntegrityConstraintViolationException e) {
 				FacesMessage message = new FacesMessage("Error: Country ID " + country.getCountryCode() + " already exists");
 				FacesContext.getCurrentInstance().addMessage(null, message);
@@ -89,7 +90,8 @@ public class CountryController {
 				dao.deleteCountry(country);
 				return "index";
 			} catch (MySQLIntegrityConstraintViolationException e) {
-				FacesMessage message = new FacesMessage("Error: Country ID " + country.getCountryCode() + " not found");
+				FacesMessage message = new FacesMessage("Error: Cannot delete Country: " + country.getCountryCode() + " as there are associated Regions");
+				//JOptionPane.showMessageDialog(null, message);
 				FacesContext.getCurrentInstance().addMessage(null, message);
 				return null;
 			} catch (CommunicationsException e) {
@@ -110,9 +112,10 @@ public class CountryController {
 			try {
 				System.out.println(country);
 				dao.updateCountry(country);
-				return "index";
+				return "list_countries";
 			} catch (MySQLIntegrityConstraintViolationException e) {
-				FacesMessage message = new FacesMessage("Error: Country ID " + country.getCountryCode() + " not found");
+				FacesMessage message = new FacesMessage("Error: Cannot update Country: " + country.getCountryCode() + ", Code must remain the same");
+				//JOptionPane.showMessageDialog(null, message);
 				FacesContext.getCurrentInstance().addMessage(null, message);
 				return null;
 			} catch (CommunicationsException e) {

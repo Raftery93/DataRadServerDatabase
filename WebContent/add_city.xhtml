@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:f="http://xmlns.jcp.org/jsf/core">
+  
+  <h:head>
+    <title>New City</title>
+  </h:head>
+  
+  <h:body>
+	<h:messages globalOnly="true" styleClass="error"/>
+  	<h3>City Details</h3>
+    <h:form>
+       City Code: <h:inputText value="#{city.cityCode}" id="cityCode" required="true" requiredMessage="City ID is mandatory"></h:inputText>
+  	  <h:message for="cityCode" styleClass="error" />
+      <br/>
+      <br/>
+      Country Code: <h:inputText value="#{city.couCode}" id="couCode" required="true" requiredMessage="Country ID is mandatory"></h:inputText>
+  	  <h:message for="couCode" styleClass="error" />
+      <br/>
+      <br/>
+      Region Code: <h:inputText value="#{city.rCode}" id="rCode" required="true" requiredMessage="Region ID is mandatory"></h:inputText>
+     <h:message for="rCode" styleClass="error" />
+      <br/>
+      <br/>
+      City Name: <h:inputText value="#{city.cityName}" id="cityName" required="true" requiredMessage="City Name is mandatory"></h:inputText>
+	  <h:message for="cityName" styleClass="error" />
+	  <br/>
+      <br/>	
+      Population: <h:inputText value="#{city.population}" id="population" p:placeholder="Enter Population" ></h:inputText>
+	  <br/>
+      <br/>	
+      By The Sea: <h:inputText value="#{city.byTheSea}" id="byTheSea" p:placeholder="Enter 'True' or 'False'" ></h:inputText>
+	  <br/>
+      <br/>	
+      Area(KM): <h:inputText value="#{city.area}" id="area" p:placeholder="Enter Area(KM)" ></h:inputText>
+	  <br/>
+      <br/>	
+	<h:commandButton value="Add" action="#{cityController.addCity(city)}"/>
+   </h:form>
+  </h:body>
+</html>

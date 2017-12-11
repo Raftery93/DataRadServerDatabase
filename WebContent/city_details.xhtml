@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<f:metadata>
+	<f:event type="preRenderView" listener="#{countryController.loadCountries()}" />
+	<f:event type="preRenderView" listener="#{cityController.loadCities()}" />
+	<f:event type="preRenderView" listener="#{regionController.loadRegions()}" />
+</f:metadata>
+<h:head>
+	<title>City Details</title>
+</h:head>
+
+<h:body>
+	<h1>Full City Details</h1>
+	City Code: #{cityController.city.cityCode}
+	<br/>
+	City Name:#{cityController.city.cityName}
+	<br/>
+	Country: #{cityController.city.countryName}
+	<br/>
+	Region: #{cityController.city.regionName}
+	<br/>
+	City Population: #{cityController.city.population}
+	<br/>
+	By The Sea: #{cityController.city.byTheSea}
+	<br/>
+	Area (KM): #{cityController.city.area}
+	<br/>
+	<h:link value="home" outcome="index"/>
+	<br/>
+	<h:link value="cities" outcome="list_cities"/>
+</h:body>
+</html>

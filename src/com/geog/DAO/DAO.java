@@ -13,12 +13,14 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.geog.Model.City;
 import com.geog.Model.Country;
 import com.geog.Model.Region;
 
 public class DAO {
 
 private DataSource mysqlDS;
+private StringBuilder sql;
 	
 	/* ======================================================================================================
 	 * Constructor
@@ -160,4 +162,150 @@ private DataSource mysqlDS;
 		myStmt.execute();			
 	}
 	
+	public ArrayList<City> loadCities() throws Exception {
+		ArrayList<City> cities = new ArrayList<City>();
+		
+		Connection myConn = null;
+		Statement myStmt = null;
+		ResultSet myRs = null;
+		
+		myConn = mysqlDS.getConnection();
+
+		String sql = "select * from city inner join country"
+				+ " on country.co_code = city.co_code inner join region on region.reg_code = city.reg_code";
+
+		myStmt = myConn.createStatement();
+
+		myRs = myStmt.executeQuery(sql);
+
+		// process result set
+		while (myRs.next()) {
+				
+			City city = new City();
+			
+			// retrieve data from result set row
+			city.setCityCode(myRs.getString("cty_code"));
+			city.setCouCode(myRs.getString("co_code"));
+			city.setrCode(myRs.getString("reg_code"));
+			city.setCityName(myRs.getString("cty_name"));
+			city.setPopulation(myRs.getLong("population"));
+			city.setByTheSea(myRs.getBoolean("isCoastal"));
+			city.setArea(myRs.getFloat("areaKM"));
+			
+			city.setCountryName(myRs.getString("co_name"));
+			city.setRegionName(myRs.getString("reg_name"));
+			//String countryName = myRs.getString("co_name");
+			//String reg_name = myRs.getString("reg_name");
+			
+			// create new country object
+			//Country country = new Country(code, description, name);
+
+			cities.add(city);
+		}	
+		return cities;
+	}
+	public void addCity(City city) throws Exception{
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		
+		myConn = mysqlDS.getConnection();
+		String sql = "insert into city values (?, ?, ?, ?, ?, ?, ?)";
+		myStmt = myConn.prepareStatement(sql);
+		myStmt.setString(1, city.getCityCode());
+		myStmt.setString(2, city.getCouCode());
+		myStmt.setString(3, city.getrCode());
+		myStmt.setString(4, city.getCityName());
+		myStmt.setLong(5, city.getPopulation());
+		myStmt.setString(6, city.isByTheSea() ? "true" : "false");
+		myStmt.setFloat(7, city.getArea());
+		myStmt.execute();			
+	}
+	//=========================================
+	public ArrayList<City> findCity(City city, String opt) throws Exception{
+		ArrayList<City> cityList = new ArrayList<City>();
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		int i = 1;
+		
+		myConn = mysqlDS.getConnection();
+
+		String test = "select * from city inner join country"
+				+ " on country.co_code = city.co_code inner join region"
+				+ " on city.reg_code = region.reg_code where isCoastal = ?";
+		
+		//String test = "SELECT * from city where isCoastal = ?";
+
+		if(city.getCountryName() != "") {
+			//System.out.println("CountryName: "+city.getCountryName());
+
+			test += " and city.co_code = ?";
+
+		}
+		//System.out.println("1.SQL:::" + test);
+		if(city.getPopulation() != 0) {
+			if(opt.equals("less")) {
+
+				test += " and population < ?";
+			} else if (opt.equals("greater")) {
+	
+				test += " and population > ?";
+			} else if (opt.equals("equal")) {
+			
+				test += " and population = ?";
+			}
+		}
+		
+		myStmt = myConn.prepareStatement(test);
+		
+		myStmt.setString(1, city.isByTheSea() ? "true" : "false");
+		//myStmt.setBoolean(i, city.isByTheSea());
+		if(city.getPopulation() != 0) {
+			myStmt.setLong(3, city.getPopulation());
+		}
+		if(!city.getCouCode().equals("")) {
+			myStmt.setString(2, city.getCouCode());
+		}
+		
+		System.out.println("Co_code: "+ city.getCouCode()
+		+ " isCoastal: " + city.isByTheSea()
+		+ " population: " + city.getPopulation() );
+		
+		System.out.println("SQL:::" + test);
+		
+		myRs = myStmt.executeQuery();
+		
+		while (myRs.next()) {
+			
+			City cityOut = new City();
+			
+			cityOut.setCityCode(myRs.getString("cty_code"));
+			cityOut.setArea(myRs.getFloat("areaKM"));
+			cityOut.setByTheSea(myRs.getBoolean("isCoastal"));
+			cityOut.setCouCode(myRs.getString("co_code"));
+			cityOut.setCityName(myRs.getString("cty_name"));
+			cityOut.setPopulation(myRs.getInt("population"));
+			cityOut.setrCode(myRs.getString("reg_code"));
+			//System.out.println("Before reg_name");
+			cityOut.setRegionName(myRs.getString("reg_name"));
+			//System.out.println("Before reg_name");
+			cityOut.setCountryName(myRs.getString("co_name"));
+			
+			cityList.add(cityOut);
+		} // while
+		
+		myRs.close();
+		myStmt.close();
+		test = "";
+		
+		return cityList;		
+		
+	}
+	
+
+	
+	
 }
+	
+

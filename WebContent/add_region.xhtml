@@ -13,14 +13,15 @@
   	<h3>Region Details</h3>
     <h:form>
        Country Code: <h:inputText value="#{region.cCode}" id="cCode" required="true" requiredMessage="Country ID is mandatory"></h:inputText>
-  	  <h:message for="countryCode" styleClass="error" />
+  	  <h:message for="cCode" styleClass="error" />
       <br/>
       <br/>
       Region Code: <h:inputText value="#{region.regionCode}" id="regionCode" required="true" requiredMessage="Region ID is mandatory"></h:inputText>
-  	  <h:message for="countryCode" styleClass="error" />
+  	  <h:message for="regionCode" styleClass="error" />
       <br/>
       <br/>
-      Region Name: <h:inputText value="#{region.regionName}" id="regionName" p:placeholder="Enter Region Name" ></h:inputText>
+      Region Name: <h:inputText value="#{region.regionName}" id="regionName" required="true" requiredMessage="Region Name is mandatory"></h:inputText>
+ 		<h:message for="regionName" styleClass="error" />    
       <br/>
       <br/>
       Country Description: <h:inputText value="#{region.rDescription}" id="rDescription" p:placeholder="Enter Region Description" ></h:inputText>

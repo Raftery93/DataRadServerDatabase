@@ -61,9 +61,9 @@ public class RegionController {
 		if (dao != null) {
 			try {
 				dao.addRegion(region);
-				return "index";
+				return "list_regions";
 			} catch (MySQLIntegrityConstraintViolationException e) {
-				FacesMessage message = new FacesMessage("Error: Region ID " + region.getRegionCode() + " already exists");
+				FacesMessage message = new FacesMessage("Error: Country " + region.getcCode() + " does not exist exists");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 				return null;
 			} catch (CommunicationsException e) {
